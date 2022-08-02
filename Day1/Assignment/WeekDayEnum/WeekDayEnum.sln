@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32602.291
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeekDayEnum", "WeekDayEnum\WeekDayEnum.csproj", "{DB9848CD-25D2-4463-8EF4-C7A4FD5E010B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DB9848CD-25D2-4463-8EF4-C7A4FD5E010B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB9848CD-25D2-4463-8EF4-C7A4FD5E010B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB9848CD-25D2-4463-8EF4-C7A4FD5E010B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB9848CD-25D2-4463-8EF4-C7A4FD5E010B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8F136327-BF39-4056-99C2-2F877A24F042}
+	EndGlobalSection
+EndGlobal

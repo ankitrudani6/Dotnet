@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32602.291
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LINQMethod", "LINQMethod\LINQMethod.csproj", "{6616A648-9B1F-41C6-855A-7761C23FC532}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6616A648-9B1F-41C6-855A-7761C23FC532}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6616A648-9B1F-41C6-855A-7761C23FC532}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6616A648-9B1F-41C6-855A-7761C23FC532}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6616A648-9B1F-41C6-855A-7761C23FC532}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {EECA8EAE-7C36-47D1-848E-E7EF54998542}
+	EndGlobalSection
+EndGlobal
