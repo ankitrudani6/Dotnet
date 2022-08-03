@@ -24,7 +24,7 @@ namespace MiddlewareDemo.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-
+                optionsBuilder.UseSqlServer("Data Source = PC0345\\MSSQL2019;Database=DotnetDB;Trusted_Connection=True;");
             }
         }
 

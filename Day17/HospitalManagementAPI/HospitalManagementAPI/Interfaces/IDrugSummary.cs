@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace HospitalManagementAPI.Interfaces
 {
-    public interface IDoctor:IRepository<Doctor>
+    public interface IDrugSummary :IRepository<DrugSummary>
     {
-
     }
 }

@@ -12,46 +12,46 @@ namespace HospitalManagementAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AssistantController : ControllerBase
+    public class PatientController : ControllerBase
     {
-        private IAssistant AssistantService { get; set; }
-        public AssistantController(IAssistant assistantService)
+        private IPatient PatientService { get; set; }
+        public PatientController(IPatient patientService)
         {
-            AssistantService = assistantService;
+            PatientService = patientService;
         }
 
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(AssistantService.GetAll());
+            return Ok(PatientService.GetAll());
         }
 
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
-            return Ok(AssistantService.GetById(id));
+            return Ok(PatientService.GetById(id));
         }
 
         [HttpPost]
-        public IActionResult Add(Assistant assistant)
+        public IActionResult Add(Patient patient)
         {
-            return Ok(AssistantService.Add(assistant));
+            return Ok(PatientService.Add(patient));
         }
 
         [Authorize]
         [HttpPut("{id}")]
-        public IActionResult Put(int id, Assistant newAssistant)
+        public IActionResult Put(int id, Patient newPatient)
         {
-            var assistant = AssistantService.GetById(id);
-            return Ok(AssistantService.Put(assistant, newAssistant));
+            var patient = PatientService.GetById(id);
+            return Ok(PatientService.Put(patient, newPatient));
         }
 
         [Authorize]
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var assistant = AssistantService.GetById(id);
-            return Ok(AssistantService.Delete(assistant));
+            var patient = PatientService.GetById(id);
+            return Ok(PatientService.Delete(patient));
         }
     }
 }

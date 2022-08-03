@@ -12,6 +12,8 @@ namespace HospitalManagementAPI
         TEntity GetById(int id);
         TEntity Add(TEntity entity);
         TEntity Delete(TEntity entity);
+        TEntity Put(TEntity entity, TEntity newEntity);
+        TEntity Patch(TEntity entity);
     }
     public class Repository<T> : IRepository<T> where T : class
     {
@@ -42,6 +44,20 @@ namespace HospitalManagementAPI
             DbContext.Set<T>().Remove(entity);
             DbContext.SaveChanges();
 
+            return entity;
+        }
+
+        public T Put(T entity, T newEntity)
+        {
+            DbContext.Entry(entity).CurrentValues.SetValues(newEntity);
+            DbContext.SaveChanges();
+            return newEntity;
+        }
+
+        public T Patch(T entity)
+        {
+            DbContext.Set<T>().Update(entity);
+            DbContext.SaveChanges();
             return entity;
         }
     }

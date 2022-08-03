@@ -22,6 +22,7 @@ namespace HospitalManagementAPI.Models
         public virtual DbSet<Doctor> Doctors { get; set; }
         public virtual DbSet<Drug> Drugs { get; set; }
         public virtual DbSet<DrugSummary> DrugSummaries { get; set; }
+        public virtual DbSet<ExceptionLogging> ExceptionLoggings { get; set; }
         public virtual DbSet<Login> Logins { get; set; }
         public virtual DbSet<Patient> Patients { get; set; }
 
@@ -122,6 +123,29 @@ namespace HospitalManagementAPI.Models
                     .HasForeignKey(d => d.PatientId)
                     .OnDelete(DeleteBehavior.SetNull)
                     .HasConstraintName("FK_DS_PatientID");
+            });
+
+            modelBuilder.Entity<ExceptionLogging>(entity =>
+            {
+                entity.HasKey(e => e.Logid)
+                    .HasName("PK_Tbl_ExceptionLoggingToDataBase");
+
+                entity.ToTable("ExceptionLogging");
+
+                entity.Property(e => e.ExceptionMsg)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.ExceptionType)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.ExceptionUrl)
+                    .HasMaxLength(100)
+                    .IsUnicode(false)
+                    .HasColumnName("ExceptionURL");
+
+                entity.Property(e => e.Logdate).HasColumnType("datetime");
             });
 
             modelBuilder.Entity<Login>(entity =>

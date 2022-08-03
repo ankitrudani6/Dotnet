@@ -72,13 +72,13 @@ namespace MiddlewareDemo
                            ExceptionLogging exceptionLogging = new ExceptionLogging()
                            {
                                ExceptionMsg = exeption.Message,
-                               ExceptionSource = "exeption.Source",
-                               ExceptionType = "exeption.GetType().Name",
-                               ExceptionUrl = "exeption.TargetSite.Name",
+                               ExceptionSource = exeption.Source,
+                               ExceptionType = exeption.GetType().Name,
+                               ExceptionUrl = exeption.TargetSite.Name,
                                Logdate = new DateTime()
                            };
-                           //var exService = context.RequestServices.GetService<IException>();
-                           //await exService.AddError(exceptionLogging);
+                           var exService = context.RequestServices.GetService<IException>();
+                           await exService.AddError(exceptionLogging);
                            var err = $"<h1>Error: {ex.Error.Message}</h1>";
                            await context.Response.WriteAsync(err).ConfigureAwait(false);
                        }

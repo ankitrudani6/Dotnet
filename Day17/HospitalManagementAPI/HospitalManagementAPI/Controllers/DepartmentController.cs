@@ -2,6 +2,7 @@
 using HospitalManagementAPI.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -39,13 +40,29 @@ namespace HospitalManagementAPI.Controllers
             return Ok(DepartmentService.Add(department));
         }
 
-        [HttpDelete("{id}")]
         [Authorize]
-
+        [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
             var department = DepartmentService.GetById(id);
             return Ok(DepartmentService.Delete(department));
+        }
+
+        [Authorize]
+        [HttpPut("{id}")]
+        public IActionResult Put(int id,Department newDepartment)
+        {
+            var department = DepartmentService.GetById(id);
+            return Ok(DepartmentService.Put(department, newDepartment));
+        }
+
+        [Authorize]
+        [HttpPatch("{id}")]
+        public IActionResult Patch(int id, [FromBody] JsonPatchDocument<Department> patchDocument)
+        {
+            var department = DepartmentService.GetById(id);
+            patchDocument.ApplyTo(department);
+            return Ok(DepartmentService.Patch(department));
         }
     }
 }

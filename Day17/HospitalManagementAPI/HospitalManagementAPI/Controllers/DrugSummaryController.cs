@@ -12,46 +12,46 @@ namespace HospitalManagementAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AssistantController : ControllerBase
+    public class DrugSummaryController : ControllerBase
     {
-        private IAssistant AssistantService { get; set; }
-        public AssistantController(IAssistant assistantService)
+        private IDrugSummary  DrugSummaryService { get; set; }
+        public DrugSummaryController(IDrugSummary drugSummaryService)
         {
-            AssistantService = assistantService;
+            DrugSummaryService = drugSummaryService;
         }
 
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(AssistantService.GetAll());
+            return Ok(DrugSummaryService.GetAll());
         }
 
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
-            return Ok(AssistantService.GetById(id));
+            return Ok(DrugSummaryService.GetById(id));
         }
 
         [HttpPost]
-        public IActionResult Add(Assistant assistant)
+        public IActionResult Add(DrugSummary drugSummary)
         {
-            return Ok(AssistantService.Add(assistant));
+            return Ok(DrugSummaryService.Add(drugSummary));
         }
 
         [Authorize]
         [HttpPut("{id}")]
-        public IActionResult Put(int id, Assistant newAssistant)
+        public IActionResult Put(int id, DrugSummary newDrugSummary)
         {
-            var assistant = AssistantService.GetById(id);
-            return Ok(AssistantService.Put(assistant, newAssistant));
+            var drugSummary = DrugSummaryService.GetById(id);
+            return Ok(DrugSummaryService.Put(drugSummary, newDrugSummary));
         }
 
         [Authorize]
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var assistant = AssistantService.GetById(id);
-            return Ok(AssistantService.Delete(assistant));
+            var drugSummary = DrugSummaryService.GetById(id);
+            return Ok(DrugSummaryService.Delete(drugSummary));
         }
     }
 }
