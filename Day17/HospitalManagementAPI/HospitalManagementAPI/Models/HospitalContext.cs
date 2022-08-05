@@ -127,25 +127,28 @@ namespace HospitalManagementAPI.Models
 
             modelBuilder.Entity<ExceptionLogging>(entity =>
             {
-                entity.HasKey(e => e.Logid)
+                entity.HasKey(e => e.ErrorId)
                     .HasName("PK_Tbl_ExceptionLoggingToDataBase");
 
                 entity.ToTable("ExceptionLogging");
+
+                entity.Property(e => e.ErrorId).HasColumnName("ErrorID");
 
                 entity.Property(e => e.ExceptionMsg)
                     .HasMaxLength(100)
                     .IsUnicode(false);
 
-                entity.Property(e => e.ExceptionType)
+                entity.Property(e => e.ExceptionSource).HasMaxLength(100);
+
+                entity.Property(e => e.Logdate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.StackTrace).IsUnicode(false);
+
+                entity.Property(e => e.Targetsite)
                     .HasMaxLength(100)
                     .IsUnicode(false);
-
-                entity.Property(e => e.ExceptionUrl)
-                    .HasMaxLength(100)
-                    .IsUnicode(false)
-                    .HasColumnName("ExceptionURL");
-
-                entity.Property(e => e.Logdate).HasColumnType("datetime");
             });
 
             modelBuilder.Entity<Login>(entity =>

@@ -57,7 +57,7 @@ namespace HospitalManagementAPI.Controllers
         [HttpGet("{docId}/GetPatients")]
         public IActionResult GetPatient(int docId)
         {
-            return Ok();
+            return Ok(DoctorService.GetPatients(docId));
         }
     }
 }

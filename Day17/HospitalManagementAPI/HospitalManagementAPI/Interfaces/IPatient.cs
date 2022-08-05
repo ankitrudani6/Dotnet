@@ -8,5 +8,6 @@ namespace HospitalManagementAPI.Interfaces
 {
     public interface IPatient :IRepository<Patient>
     {
+        
     }
 }
