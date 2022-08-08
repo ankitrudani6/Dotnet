@@ -56,6 +56,16 @@ namespace JWTAuthenticationDemo
                         Title = "JWT API",
                         Description = "ASP.NET Core 3.1 Web API"
                     });
+                    swagger.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+                    {
+                        Name = "Authorization",
+                        Type = SecuritySchemeType.ApiKey,
+                        Scheme = "Bearer",
+                        BearerFormat = "JWT",
+                        In = ParameterLocation.Header,
+                        Description = "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 1safsfsdfdfd\"",
+                    });
+                    swagger.OperationFilter<AuthResponsesOperationFilter>();
                 });
 
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));

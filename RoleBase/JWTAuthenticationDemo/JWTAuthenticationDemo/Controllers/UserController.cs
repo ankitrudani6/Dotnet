@@ -16,12 +16,12 @@ namespace JWTAuthenticationDemo.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class LoginController : ControllerBase
+    public class UserController : ControllerBase
     {
         private IConfiguration _config;
         private IRepository<UserInfo> UserService { get; set; }
 
-        public LoginController(IConfiguration config, IRepository<UserInfo> userService)
+        public UserController(IConfiguration config, IRepository<UserInfo> userService)
         {
             _config = config;
             UserService = userService;
@@ -29,28 +29,24 @@ namespace JWTAuthenticationDemo.Controllers
 
         [HttpGet]
         [Authorize]
-        public ActionResult<IEnumerable<string>> Get()
+        public ActionResult Get()
         {
             var currentUser = HttpContext.User;
-            int spendingTimeWithCompany = 0;
-
-            if (currentUser.HasClaim(c => c.Type == "DateOfJoing"))
+            if (currentUser.HasClaim(c => c.Type == ClaimTypes.Role))
             {
-                DateTime date = DateTime.Parse(currentUser.Claims.FirstOrDefault(c => c.Type == "DateOfJoing").Value);
-                spendingTimeWithCompany = DateTime.Today.Year - date.Year;
+                var role = currentUser.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value;
+                
+                if (role == "admin")
+                {
+                    return RedirectToAction("Get","Admin");
+                }
+                return RedirectToAction("Get","Home");
             }
-
-            if (spendingTimeWithCompany > 5)
-            {
-                return new string[] { "High Time1", "High Time2", "High Time3", "High Time4", "High Time5" };
-            }
-            else
-            {
-                return new string[] { "value1", "value2", "value3", "value4", "value5" };
-            }
+            return Unauthorized();  
         }
         [AllowAnonymous]
         [HttpPost]
+        [Route("Login")]
         public IActionResult Login([FromBody] LoginDTO login)
         {
             IActionResult response = Unauthorized();
@@ -65,7 +61,9 @@ namespace JWTAuthenticationDemo.Controllers
             return response;
         }
 
-        [HttpPost("registration")]
+        [HttpPost]
+        [Route("Registration")]
+
         public IActionResult Registration(UserInfo userInfo)
         {
             return Ok(UserService.Add(userInfo));
@@ -79,7 +77,7 @@ namespace JWTAuthenticationDemo.Controllers
             var claims = new[] {
                 new Claim(JwtRegisteredClaimNames.Sub, userInfo.FirstName),
                 new Claim(JwtRegisteredClaimNames.Email, userInfo.EmailAddress),
-                new Claim(ClaimTypes.Role,userInfo.IsAdmin.ToString()),
+                new Claim(ClaimTypes.Role,userInfo.IsAdmin.ToString()=="True"?"admin":"user"),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
             var token = new JwtSecurityToken(_config["Jwt:Issuer"],
@@ -97,5 +95,6 @@ namespace JWTAuthenticationDemo.Controllers
 
             return user;
         }
+
     }
 }
