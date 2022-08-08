@@ -1,0 +1,167 @@
+CREATE DATABASE MakeMyTripDB
+GO
+
+USE MakeMyTripDB
+GO
+
+CREATE TABLE Country(
+	CountryID INT CONSTRAINT PK_CountryID PRIMARY KEY IDENTITY(1,1),
+	CountryName VARCHAR(20),
+	CountryCode VARCHAR(5),
+	CreatedAt DATETIME DEFAULT GETDATE(),
+	ModifiedAt DATETIME
+);
+
+CREATE TABLE LoginInfo(
+	UserID INT CONSTRAINT PK_UserID PRIMARY KEY IDENTITY(1,1),
+	EmailAddress VARCHAR(50) UNIQUE,
+	PhoneNumber NUMERIC(10) UNIQUE CONSTRAINT CH_PhoneNumber CHECK(PhoneNumber BETWEEN 6000000000 AND 9999999999),
+	Password NVARCHAR(16) NOT NULL,
+	isAdmin BIT DEFAULT 0,
+	isActive BIT DEFAULT 1,
+	CreatedAt DATETIME DEFAULT GETDATE(),
+	ModifiedAt DATETIME
+);
+
+CREATE TABLE ProfileInfo(
+	ProfileID INT CONSTRAINT PK_ProfileID PRIMARY KEY IDENTITY(1,1),
+	UserID INT CONSTRAINT FK_ProfileInfo_LoginInfo FOREIGN KEY REFERENCES LoginInfo,
+	FullName VARCHAR(50),
+	BirthDate DATETIME,
+	Gender VARCHAR(6) CONSTRAINT CK_gender CHECK(Gender IN ('MALE','FEMALE','OTHER')),
+	MaritalStatus VARCHAR(7) CONSTRAINT CK_MaritalStatus CHECK(MaritalStatus IN ('Married','Single')),
+	PassportNumber VARCHAR(8),
+	IssuingCountryID INT CONSTRAINT FK_ProfileInfo_IssuingCountryID FOREIGN KEY REFERENCES Country(CountryID),
+	ExpiredDate DATE,
+	isTraveller BIT DEFAULT 0,
+	CreatedAt DATETIME DEFAULT GETDATE(),
+	ModifiedAt DATETIME
+);
+
+CREATE TABLE Airline(
+	AirLineID INT CONSTRAINT PK_AirLineID PRIMARY KEY IDENTITY(1,1),
+	AirLineName VARCHAR(15) NOT NULL UNIQUE,
+	CreatedAt DATETIME DEFAULT GETDATE(),
+	ModifiedAt DATETIME
+);
+
+CREATE TABLE FlightCode(
+	FlightCodeID INT CONSTRAINT PK_FlightCodeID PRIMARY KEY IDENTITY(1,1),
+	FlightCodeName VARCHAR(10) NOT NULL,
+	AirLineID INT CONSTRAINT FK_FlightCode_AirlineID FOREIGN KEY REFERENCES Airline,
+
+);
+CREATE TABLE Location(
+	LocationID INT CONSTRAINT PK_LocationID PRIMARY KEY IDENTITY(1,1),
+	LocationName VARCHAR(20) NOT NULL UNIQUE,
+	CreatedAt DATETIME DEFAULT GETDATE(),
+	ModifiedAt DATETIME
+);
+
+CREATE TABLE Flight(
+	FlightID INT CONSTRAINT PK_FlightID PRIMARY KEY IDENTITY(1,1),
+	FlightCodeID INT CONSTRAINT FK_Flight_FlightCodeID FOREIGN KEY REFERENCES FlightCode,
+	SourceID INT CONSTRAINT FK_Flight_SourceID FOREIGN KEY REFERENCES Location(LocationID),
+	DestinationID INT CONSTRAINT FK_Flight_DestinationID FOREIGN KEY REFERENCES Location(LocationID),
+	DepartureTime TIME,
+	ArrivalTime TIME,
+	Duration INT CONSTRAINT CK_Duration CHECK(Duration >0),
+	TotalSeats INT,
+	CreatedAt DATETIME DEFAULT GETDATE(),
+	ModifiedAt DATETIME
+);
+
+CREATE TABLE Schedule(
+	ScheduleID INT CONSTRAINT PK_ScheduleID PRIMARY KEY IDENTITY(1,1),
+	FlightID INT CONSTRAINT FK_Schedule_FlightID FOREIGN KEY REFERENCES Flight,
+	DepartureDate DATE,
+	BaseFare MONEY NOT NULL,
+	Surcharges MONEY NOT NULL,
+	Total MONEY,
+	AvailableSeats INT,
+	CreatedAt DATETIME DEFAULT GETDATE(),
+	ModifiedAt DATETIME
+);
+
+CREATE TABLE TripType(
+	TripTypeID INT CONSTRAINT PK_TripTypeID PRIMARY KEY IDENTITY(1,1),
+	TripTypeName VARCHAR(20) NOT NULL,
+	CreatedAt DATETIME DEFAULT GETDATE(),
+	ModifiedAt DATETIME
+);
+
+CREATE TABLE PassengerType(
+	PassengerTypeID INT CONSTRAINT PK_PassengerTypeID PRIMARY KEY IDENTITY(1,1),
+	PassengerTypeName VARCHAR(20) NOT NULL,
+	CreatedAt DATETIME DEFAULT GETDATE(),
+	ModifiedAt DATETIME
+);
+
+CREATE TABLE TravelClass(
+	TravelClassID INT CONSTRAINT PK_TravelClass PRIMARY KEY IDENTITY(1,1),
+	TravelClassName VARCHAR(20) NOT NULL,
+	CreatedAt DATETIME DEFAULT GETDATE(),
+	ModifiedAt DATETIME
+);
+
+CREATE TABLE Discount(
+	DiscountID INT CONSTRAINT PK_DiscountID PRIMARY KEY IDENTITY(1,1),
+	DiscountCode VARCHAR(20) NOT NULL,
+	DiscountPer INT CONSTRAINT CK_DiscountPer CHECK(DiscountPer BETWEEN 0 AND 100),
+	DiscountDiscription VARCHAR(100),
+	StartDate DATETIME,
+	ExpriedDate DATETIME,
+	CreatedAt DATETIME DEFAULT GETDATE(),
+	ModifiedAt DATETIME
+);
+
+CREATE TABLE FlightBooking(
+	FlightBookingID INT CONSTRAINT PK_FlightBooking PRIMARY KEY IDENTITY(1,1),
+	PNRNo VARCHAR(10) NOT NULL UNIQUE,
+	ScheduleID INT CONSTRAINT FK_FlightBooking_ScheduleID FOREIGN KEY REFERENCES Schedule,
+	TripTypeID INT CONSTRAINT FK_FlightBooking_TripTypeID FOREIGN KEY REFERENCES TripType,
+	TravelClassID INT CONSTRAINT FK_FlightBooking_TravelClassID FOREIGN KEY REFERENCES TravelClass,
+	NoOfPassenger INT DEFAULT 0,
+	TotalFare MONEY,
+	TotalSurcharge MONEY,
+	TravellInsurance BIT,
+	CovidInsurance BIT,
+	TotalAmount MONEY,
+	DiscountID INT CONSTRAINT FK_FlightBooking_DiscountID FOREIGN KEY REFERENCES Discount,
+	PayableAmount MONEY,
+	GSTCompanyName VARCHAR(50),
+	GSTRegistrationNo VARCHAR(15),
+	DateOfBooking DATETIME DEFAULT GETDATE(),
+	Status VARCHAR(10) CONSTRAINT CK_FlightBooking_Status CHECK(Status IN('Pending','Success','Failed','Cancelled')),
+	CreatedAt DATETIME DEFAULT GETDATE(),
+	ModifiedAt DATETIME
+);
+
+CREATE TABLE FlightBookingLine(
+	FlightBookingLineID INT CONSTRAINT PK_FlightBookingLineID PRIMARY KEY IDENTITY(1,1),
+	FlightBookingID INT CONSTRAINT FK_FlightBookingLine_FlightBookingID FOREIGN KEY REFERENCES FlightBooking,
+	ProfileID INT CONSTRAINT FK_FlightBookingLine_ProfileID FOREIGN KEY REFERENCES ProfileInfo,
+	PassengerTypeID INT CONSTRAINT FK_FlightBooking_PassengerTypeID FOREIGN KEY REFERENCES PassengerType,
+	SeatNumber VARCHAR(5) NOT NULL,
+	CreatedAt DATETIME DEFAULT GETDATE(),
+	ModifiedAt DATETIME
+);
+
+CREATE TABLE PaymentType(
+	PaymentTypeID INT CONSTRAINT PK_PaymentTypeID PRIMARY KEY IDENTITY(1,1),
+	PaymentTypeName VARCHAR(20) NOT NULL,
+	CreatedAt DATETIME DEFAULT GETDATE(),
+	ModifiedAt DATETIME
+);
+
+CREATE TABLE Payment(
+	PaymentID INT CONSTRAINT PK_PaymentID PRIMARY KEY IDENTITY(1,1),
+	FlightBookingID INT CONSTRAINT FK_Payment_FlightBookingID FOREIGN KEY REFERENCES FlightBooking,
+	PaymentTypeID INT CONSTRAINT FK_Payment_PaymentTypeID FOREIGN KEY REFERENCES PaymentType,
+	PaymentStatus VARCHAR(10) CONSTRAINT CK_Payment_PaymentStatus CHECK(PaymentStatus IN('Pending','Success','Failed','Cancelled')),
+	CreatedAt DATETIME DEFAULT GETDATE(),
+	ModifiedAt DATETIME
+);
+
+
+
