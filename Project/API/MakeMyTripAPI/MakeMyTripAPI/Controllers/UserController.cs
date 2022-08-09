@@ -61,10 +61,10 @@ namespace MakeMyTripAPI.Controllers
             return response;
         }
 
-        [HttpPost]
-        [Route("Registration")]
-        public IActionResult Registration(LoginInfo loginInfo)
-        {
+            [HttpPost]
+            [Route("Registration")]
+            public IActionResult Registration(LoginInfo loginInfo)
+            {
             return Ok(LoginService.Add(loginInfo));
         }
 
