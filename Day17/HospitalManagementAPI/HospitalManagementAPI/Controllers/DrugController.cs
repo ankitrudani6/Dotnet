@@ -43,7 +43,6 @@ namespace HospitalManagementAPI.Controllers
         public IActionResult Put(int id, Drug newDrug)
         {
             var drug = DrugService.GetById(id);
-            Exception
             return Ok(DrugService.Put(drug, newDrug));
         }
 
