@@ -1,0 +1,40 @@
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Navbar</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/mobiles" routerLinkActive="active">Mobiles
+            <i class="fa fa-mobile" aria-hidden="true"></i>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLinkActive="active">Electronics</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLinkActive="active">Others</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+    <strong *ngIf="isLoggedIn">Welcome
+      <br>
+      {{userData?.firstName}} {{userData?.lastName}}</strong>
+    <button type="button" class="btn btn-outline-success" *ngIf="!isLoggedIn" routerLink="/register">Register</button>
+    <button type="button" class="btn btn-outline-success" *ngIf="!isLoggedIn" routerLink="/login">Login</button>
+    <button type="button" class="btn btn-danger" *ngIf="isLoggedIn" (click)="logout()">Logout</button>
+  </div>
+</nav>
+<div class="container">
+  <div [@routeAnimations]="getRouteAnimationData()">
+    <router-outlet></router-outlet>
+  </div>
+</div>

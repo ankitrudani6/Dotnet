@@ -1,0 +1,68 @@
+<form #form="ngForm" (ngSubmit)="onSubmit(form)">
+  <div class="col-lg-6">
+    <div class="mb-3">
+      <label for="exampleFormControlInput1" class="form-label">Product
+        Name:</label>
+      <input type="text" class="form-control" ngModel name="productName" #productName="ngModel" required>
+      <span class="text-danger" *ngIf="productName.invalid">This field is required.</span>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Price:</label>
+      <input type="number" class="form-control" ngModel name="price" #price="ngModel" required min="0">
+      <span class="text-danger" *ngIf="price.invalid">This field is required.</span>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Desciption:</label>
+      <input type="text" class="form-control" ngModel name="description">
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Image URL:</label>
+      <input type="text" class="form-control" ngModel name="image" #image="ngModel">
+      <div class="row">
+        <div class="col-lg-2">
+          <img [src]="image.value" class="rounded float-start">
+        </div>
+      </div>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Do you want to add extra images?</label>
+      <br>
+      <input type="radio" id="yes" [checked]="isOtherImage=='yes'" (click)="isOtherImage='yes'" value="yes">
+        <label for="yes">Yes</label>
+        <input type="radio" id="no" [checked]="isOtherImage=='no'" (click)="isOtherImage='no';otherImagesArray=[]"
+        value="no">
+        <label for="no">No</label>
+    </div>
+    <div *ngIf="isOtherImage=='yes'">
+      <div class="mb-3">
+        <label class="form-label">Other image URL:</label>
+        <input type="text" class="form-control" [(ngModel)]="otherImagesArray[0]" [ngModelOptions]="{standalone: true}">
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Other image URL:</label>
+        <input type="text" class="form-control" [(ngModel)]="otherImagesArray[1]" value=""
+          [ngModelOptions]="{standalone: true}">
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Other image URL:</label>
+        <input type="text" class="form-control" [(ngModel)]="otherImagesArray[2]" [ngModelOptions]="{standalone: true}">
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Other image URL:</label>
+        <input type="text" class="form-control" [(ngModel)]="otherImagesArray[3]" [ngModelOptions]="{standalone: true}">
+      </div>
+
+    </div>
+    <div class="row" *ngIf="otherImagesArray.length>0">
+      <ng-container>
+        <div>
+          <img [src]="otherImage" *ngFor="let otherImage of otherImagesArray" class="rounded float-start">
+        </div>
+      </ng-container>
+    </div>
+    <br>
+    <button type="submit" class="btn btn-success me-2" [disabled]="form.invalid">Save</button>
+    <button class="btn btn-danger" type="button" (click)="onCancel()">Cancel</button>
+  </div>
+</form>

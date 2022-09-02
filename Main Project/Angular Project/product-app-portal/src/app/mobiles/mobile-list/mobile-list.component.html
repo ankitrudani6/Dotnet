@@ -1,0 +1,39 @@
+<div class="d-grid gap-2 mt-2 justify-content-md-end">
+  <button class="btn btn-success" type="button" [routerLink]="['/mobiles/add-mobile']"
+    routerLinkActive="router-link-active">Add
+    Mobile
+    <span class="ml-2">
+      <i class="fa fa-mobile" aria-hidden="true"></i></span>
+  </button>
+</div>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Product Id</th>
+      <th scope="col">Product Name</th>
+      <th scope="col">Image</th>
+      <th scope="col">Price</th>
+      <th scope="col">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let item of mobileList;let i=index">
+      <th scope="row">{{i}}</th>
+      <td>{{item.productName}}</td>
+      <td><img [src]="" class="rounded float-start" [alt]="item.productName"></td>
+      <td>{{item.price | currency:'Rs. '}}</td>
+      <td>
+        <span class="m-3">
+          <i class="fa fa-pencil-square-o" aria-hidden="true" [routerLink]="[i]"></i> </span>
+        <i class="fa fa-trash" aria-hidden="true" (click)="onDelete(i)"></i>
+        <span class="m-3">
+          <!-- <i class="fa fa-eye" aria-hidden="true"></i> -->
+        </span>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<ag-grid-angular (rowSelected)="onRowSelect($event)" [paginationPageSize]="10" rowSelection="single" [pagination]="true"
+  [frameworkComponents]="frameworkComponents" (gridReady)="onGridReady($event)" style="width: 950px; height: 500px;"
+  class="ag-theme-alpine" [rowData]="mobileList" [columnDefs]="columnDefs">
+</ag-grid-angular>

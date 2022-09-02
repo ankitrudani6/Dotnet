@@ -1,0 +1,47 @@
+<form [formGroup]="editMobileFormGroup" (ngSubmit)="onSubmit()">
+  <div class="col-lg-6">
+    <div class="mb-3">
+      <label for="exampleFormControlInput1" class="form-label">Product
+        Name:</label>
+      <input type="text" class="form-control" formControlName="productName" required>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Price:</label>
+      <input type="number" class="form-control" formControlName="price" required>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Desciption:</label>
+      <input type="text" class="form-control" formControlName="description">
+    </div>
+    <div class="mb-3">
+
+      <label class="form-label">Image URL:</label>
+      <input type="text" class="form-control mb-2" formControlName="image" required>
+      <div class="row">
+        <div class="col-lg-2">
+          <img [src]="editMobileFormGroup.controls['image'].value" class="rounded float-start">
+        </div>
+      </div>
+    </div>
+    <div *ngIf="this.mobile?.otherImages?.length>0" formArrayName="otherImages">
+      <div class="mb-3" *ngFor="let image of otherImages.controls; let i=index">
+        <label class="form-label">Other image URL:</label>
+        <input type="text" class="form-control" [formControlName]="i">
+        <i class="fa fa-trash" aria-hidden="true" (click)="onDelete(i)"></i>
+      </div>
+    </div>
+    <div class="row" *ngIf="this.mobile?.otherImages?.length>0">
+      <ng-container>
+        <div>
+          <img [src]="image.value" *ngFor="let image of otherImages.controls; let i=index" class="rounded float-start">
+        </div>
+      </ng-container>
+    </div>
+    <button type="button" class="btn btn-primary me-2" (click)="addOtherImage()">Add other image</button>
+    <div class="mt-2">
+      <button type="submit" class="btn btn-success me-2" [disabled]="editMobileFormGroup.invalid">Save</button>
+      <button class="btn btn-danger" type="button" (click)="onCancel()">Cancel</button>
+    </div>
+  </div>
+</form>

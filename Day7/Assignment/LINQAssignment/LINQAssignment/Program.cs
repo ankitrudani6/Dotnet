@@ -77,7 +77,7 @@ namespace LINQAssignment
 
             foreach (var item in exp)
             {
-                Console.WriteLine("Department : {0}, Total Salary : {1}", item.Department, item.TotalSalary);
+                Console.WriteLine("Department : {0}, Total Salary : {1}", item, item.TotalSalary);
             }
         }
     }
